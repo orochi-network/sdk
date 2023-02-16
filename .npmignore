@@ -1,0 +1,17 @@
+docs
+test
+node_modules
+.git
+src/**/*
+typechain/**/*
+tsconfig.json
+devel.js
+inc
+typedoc.json
+.eslintignore
+.eslintrc.json
+.prettierrc
+.typedoc-plugin-external-module-name.js
+.github
+*.log
+.DS_Store

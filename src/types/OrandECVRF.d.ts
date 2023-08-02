@@ -10,16 +10,10 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-  PromiseOrValue,
-} from "../../common";
+} from 'ethers';
+import type { FunctionFragment, Result } from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
+import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent, PromiseOrValue } from './common';
 
 export declare namespace IOrandStorage {
   export type ECVRFEpochProofStruct = {
@@ -41,7 +35,7 @@ export declare namespace IOrandStorage {
     string,
     [BigNumber, BigNumber],
     [BigNumber, BigNumber],
-    BigNumber
+    BigNumber,
   ] & {
     y: BigNumber;
     gamma: [BigNumber, BigNumber];
@@ -56,24 +50,21 @@ export declare namespace IOrandStorage {
 
 export interface OrandECVRFInterface extends utils.Interface {
   functions: {
-    "verifyProof(uint256[2],uint256,(uint256,uint256[2],uint256,uint256,address,uint256[2],uint256[2],uint256))": FunctionFragment;
+    'verifyProof(uint256[2],uint256,(uint256,uint256[2],uint256,uint256,address,uint256[2],uint256[2],uint256))': FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "verifyProof"): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: 'verifyProof'): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "verifyProof",
+    functionFragment: 'verifyProof',
     values: [
       [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       PromiseOrValue<BigNumberish>,
-      IOrandStorage.ECVRFEpochProofStruct
-    ]
+      IOrandStorage.ECVRFEpochProofStruct,
+    ],
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "verifyProof",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'verifyProof', data: BytesLike): Result;
 
   events: {};
 }
@@ -88,16 +79,12 @@ export interface OrandECVRF extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -109,7 +96,7 @@ export interface OrandECVRF extends BaseContract {
       pk: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       alpha: PromiseOrValue<BigNumberish>,
       epoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { epochResult: BigNumber }>;
   };
 
@@ -117,7 +104,7 @@ export interface OrandECVRF extends BaseContract {
     pk: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
     alpha: PromiseOrValue<BigNumberish>,
     epoch: IOrandStorage.ECVRFEpochProofStruct,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   callStatic: {
@@ -125,7 +112,7 @@ export interface OrandECVRF extends BaseContract {
       pk: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       alpha: PromiseOrValue<BigNumberish>,
       epoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
   };
 
@@ -136,7 +123,7 @@ export interface OrandECVRF extends BaseContract {
       pk: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       alpha: PromiseOrValue<BigNumberish>,
       epoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
   };
 
@@ -145,7 +132,7 @@ export interface OrandECVRF extends BaseContract {
       pk: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       alpha: PromiseOrValue<BigNumberish>,
       epoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
   };
 }

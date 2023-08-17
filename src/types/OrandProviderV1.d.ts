@@ -13,20 +13,10 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
-import type {
-  TypedEventFilter,
-  TypedEvent,
-  TypedListener,
-  OnEvent,
-  PromiseOrValue,
-} from "../../common";
+} from 'ethers';
+import type { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
+import type { TypedEventFilter, TypedEvent, TypedListener, OnEvent, PromiseOrValue } from './common';
 
 export declare namespace IOrandStorage {
   export type ECVRFEpochProofStruct = {
@@ -48,7 +38,7 @@ export declare namespace IOrandStorage {
     string,
     [BigNumber, BigNumber],
     [BigNumber, BigNumber],
-    BigNumber
+    BigNumber,
   ] & {
     y: BigNumber;
     gamma: [BigNumber, BigNumber];
@@ -69,12 +59,7 @@ export declare namespace IOrandECDSA {
     y: PromiseOrValue<BigNumberish>;
   };
 
-  export type OrandECDSAProofStructOutput = [
-    string,
-    BigNumber,
-    string,
-    BigNumber
-  ] & {
+  export type OrandECDSAProofStructOutput = [string, BigNumber, string, BigNumber] & {
     signer: string;
     receiverEpoch: BigNumber;
     receiverAddress: string;
@@ -84,245 +69,137 @@ export declare namespace IOrandECDSA {
 
 export interface OrandProviderV1Interface extends utils.Interface {
   functions: {
-    "checkECVRFProof(uint256,(uint256,uint256[2],uint256,uint256,address,uint256[2],uint256[2],uint256))": FunctionFragment;
-    "checkProofSigner(bytes)": FunctionFragment;
-    "collateralBalance(address)": FunctionFragment;
-    "deposit(address)": FunctionFragment;
-    "getCurrentAlpha(address)": FunctionFragment;
-    "getECVRFVerifier()": FunctionFragment;
-    "getFraudProofAlpha(address,uint96)": FunctionFragment;
-    "getOperator()": FunctionFragment;
-    "getPenaltyFee()": FunctionFragment;
-    "getPublicKey()": FunctionFragment;
-    "getTargetEpoch(address)": FunctionFragment;
-    "owner()": FunctionFragment;
-    "publishFraudProof(bytes)": FunctionFragment;
-    "publishValidityProof(bytes,(uint256,uint256[2],uint256,uint256,address,uint256[2],uint256[2],uint256))": FunctionFragment;
-    "renounceOwnership()": FunctionFragment;
-    "setNewECVRFVerifier(address)": FunctionFragment;
-    "setOperator(address)": FunctionFragment;
-    "setPenalty(uint256)": FunctionFragment;
-    "setPublicKey(bytes)": FunctionFragment;
-    "sueFraudProof(bytes,(uint256,uint256[2],uint256,uint256,address,uint256[2],uint256[2],uint256))": FunctionFragment;
-    "switchToValidityProof(bytes)": FunctionFragment;
-    "transferOwnership(address)": FunctionFragment;
-    "withdraw()": FunctionFragment;
+    'checkECVRFProof(uint256,(uint256,uint256[2],uint256,uint256,address,uint256[2],uint256[2],uint256))': FunctionFragment;
+    'checkProofSigner(bytes)': FunctionFragment;
+    'collateralBalance(address)': FunctionFragment;
+    'deposit(address)': FunctionFragment;
+    'getCurrentAlpha(address)': FunctionFragment;
+    'getECVRFVerifier()': FunctionFragment;
+    'getFraudProofAlpha(address,uint96)': FunctionFragment;
+    'getOperator()': FunctionFragment;
+    'getPenaltyFee()': FunctionFragment;
+    'getPublicKey()': FunctionFragment;
+    'getTargetEpoch(address)': FunctionFragment;
+    'owner()': FunctionFragment;
+    'publishFraudProof(bytes)': FunctionFragment;
+    'publishValidityProof(bytes,(uint256,uint256[2],uint256,uint256,address,uint256[2],uint256[2],uint256))': FunctionFragment;
+    'renounceOwnership()': FunctionFragment;
+    'setNewECVRFVerifier(address)': FunctionFragment;
+    'setOperator(address)': FunctionFragment;
+    'setPenalty(uint256)': FunctionFragment;
+    'setPublicKey(bytes)': FunctionFragment;
+    'sueFraudProof(bytes,(uint256,uint256[2],uint256,uint256,address,uint256[2],uint256[2],uint256))': FunctionFragment;
+    'switchToValidityProof(bytes)': FunctionFragment;
+    'transferOwnership(address)': FunctionFragment;
+    'withdraw()': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "checkECVRFProof"
-      | "checkProofSigner"
-      | "collateralBalance"
-      | "deposit"
-      | "getCurrentAlpha"
-      | "getECVRFVerifier"
-      | "getFraudProofAlpha"
-      | "getOperator"
-      | "getPenaltyFee"
-      | "getPublicKey"
-      | "getTargetEpoch"
-      | "owner"
-      | "publishFraudProof"
-      | "publishValidityProof"
-      | "renounceOwnership"
-      | "setNewECVRFVerifier"
-      | "setOperator"
-      | "setPenalty"
-      | "setPublicKey"
-      | "sueFraudProof"
-      | "switchToValidityProof"
-      | "transferOwnership"
-      | "withdraw"
+      | 'checkECVRFProof'
+      | 'checkProofSigner'
+      | 'collateralBalance'
+      | 'deposit'
+      | 'getCurrentAlpha'
+      | 'getECVRFVerifier'
+      | 'getFraudProofAlpha'
+      | 'getOperator'
+      | 'getPenaltyFee'
+      | 'getPublicKey'
+      | 'getTargetEpoch'
+      | 'owner'
+      | 'publishFraudProof'
+      | 'publishValidityProof'
+      | 'renounceOwnership'
+      | 'setNewECVRFVerifier'
+      | 'setOperator'
+      | 'setPenalty'
+      | 'setPublicKey'
+      | 'sueFraudProof'
+      | 'switchToValidityProof'
+      | 'transferOwnership'
+      | 'withdraw',
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "checkECVRFProof",
-    values: [PromiseOrValue<BigNumberish>, IOrandStorage.ECVRFEpochProofStruct]
+    functionFragment: 'checkECVRFProof',
+    values: [PromiseOrValue<BigNumberish>, IOrandStorage.ECVRFEpochProofStruct],
   ): string;
+  encodeFunctionData(functionFragment: 'checkProofSigner', values: [PromiseOrValue<BytesLike>]): string;
+  encodeFunctionData(functionFragment: 'collateralBalance', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'deposit', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'getCurrentAlpha', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'getECVRFVerifier', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "checkProofSigner",
-    values: [PromiseOrValue<BytesLike>]
+    functionFragment: 'getFraudProofAlpha',
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>],
   ): string;
+  encodeFunctionData(functionFragment: 'getOperator', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getPenaltyFee', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getPublicKey', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getTargetEpoch', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'owner', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'publishFraudProof', values: [PromiseOrValue<BytesLike>]): string;
   encodeFunctionData(
-    functionFragment: "collateralBalance",
-    values: [PromiseOrValue<string>]
+    functionFragment: 'publishValidityProof',
+    values: [PromiseOrValue<BytesLike>, IOrandStorage.ECVRFEpochProofStruct],
   ): string;
+  encodeFunctionData(functionFragment: 'renounceOwnership', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'setNewECVRFVerifier', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'setOperator', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'setPenalty', values: [PromiseOrValue<BigNumberish>]): string;
+  encodeFunctionData(functionFragment: 'setPublicKey', values: [PromiseOrValue<BytesLike>]): string;
   encodeFunctionData(
-    functionFragment: "deposit",
-    values: [PromiseOrValue<string>]
+    functionFragment: 'sueFraudProof',
+    values: [PromiseOrValue<BytesLike>, IOrandStorage.ECVRFEpochProofStruct],
   ): string;
-  encodeFunctionData(
-    functionFragment: "getCurrentAlpha",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getECVRFVerifier",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getFraudProofAlpha",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getOperator",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getPenaltyFee",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getPublicKey",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getTargetEpoch",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "publishFraudProof",
-    values: [PromiseOrValue<BytesLike>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "publishValidityProof",
-    values: [PromiseOrValue<BytesLike>, IOrandStorage.ECVRFEpochProofStruct]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "renounceOwnership",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setNewECVRFVerifier",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setOperator",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setPenalty",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setPublicKey",
-    values: [PromiseOrValue<BytesLike>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "sueFraudProof",
-    values: [PromiseOrValue<BytesLike>, IOrandStorage.ECVRFEpochProofStruct]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "switchToValidityProof",
-    values: [PromiseOrValue<BytesLike>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'switchToValidityProof', values: [PromiseOrValue<BytesLike>]): string;
+  encodeFunctionData(functionFragment: 'transferOwnership', values: [PromiseOrValue<string>]): string;
+  encodeFunctionData(functionFragment: 'withdraw', values?: undefined): string;
 
-  decodeFunctionResult(
-    functionFragment: "checkECVRFProof",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "checkProofSigner",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "collateralBalance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getCurrentAlpha",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getECVRFVerifier",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getFraudProofAlpha",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getOperator",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getPenaltyFee",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getPublicKey",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getTargetEpoch",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "publishFraudProof",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "publishValidityProof",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "renounceOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setNewECVRFVerifier",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setOperator",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "setPenalty", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setPublicKey",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "sueFraudProof",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "switchToValidityProof",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "transferOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'checkECVRFProof', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'checkProofSigner', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'collateralBalance', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'deposit', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getCurrentAlpha', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getECVRFVerifier', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getFraudProofAlpha', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getOperator', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getPenaltyFee', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getPublicKey', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getTargetEpoch', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'owner', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'publishFraudProof', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'publishValidityProof', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'renounceOwnership', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setNewECVRFVerifier', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setOperator', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setPenalty', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setPublicKey', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'sueFraudProof', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'switchToValidityProof', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
 
   events: {
-    "ApplyPenalty(address,address,uint256)": EventFragment;
-    "NewEpoch(address,uint256,uint256)": EventFragment;
-    "OwnershipTransferred(address,address)": EventFragment;
-    "SetNewECVRFVerifier(address,address)": EventFragment;
-    "SetNewOperator(address,address)": EventFragment;
-    "SetNewPublicKey(address,uint256,uint256)": EventFragment;
-    "SetPenalty(uint256,uint256)": EventFragment;
-    "Transfer(address,address,uint256)": EventFragment;
+    'ApplyPenalty(address,address,uint256)': EventFragment;
+    'NewEpoch(address,uint256,uint256)': EventFragment;
+    'OwnershipTransferred(address,address)': EventFragment;
+    'SetNewECVRFVerifier(address,address)': EventFragment;
+    'SetNewOperator(address,address)': EventFragment;
+    'SetNewPublicKey(address,uint256,uint256)': EventFragment;
+    'SetPenalty(uint256,uint256)': EventFragment;
+    'Transfer(address,address,uint256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "ApplyPenalty"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "NewEpoch"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SetNewECVRFVerifier"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SetNewOperator"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SetNewPublicKey"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SetPenalty"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ApplyPenalty'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'NewEpoch'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'OwnershipTransferred'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SetNewECVRFVerifier'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SetNewOperator'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SetNewPublicKey'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SetPenalty'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Transfer'): EventFragment;
 }
 
 export interface ApplyPenaltyEventObject {
@@ -330,10 +207,7 @@ export interface ApplyPenaltyEventObject {
   theAccused: string;
   value: BigNumber;
 }
-export type ApplyPenaltyEvent = TypedEvent<
-  [string, string, BigNumber],
-  ApplyPenaltyEventObject
->;
+export type ApplyPenaltyEvent = TypedEvent<[string, string, BigNumber], ApplyPenaltyEventObject>;
 
 export type ApplyPenaltyEventFilter = TypedEventFilter<ApplyPenaltyEvent>;
 
@@ -342,10 +216,7 @@ export interface NewEpochEventObject {
   receiverEpoch: BigNumber;
   randomness: BigNumber;
 }
-export type NewEpochEvent = TypedEvent<
-  [string, BigNumber, BigNumber],
-  NewEpochEventObject
->;
+export type NewEpochEvent = TypedEvent<[string, BigNumber, BigNumber], NewEpochEventObject>;
 
 export type NewEpochEventFilter = TypedEventFilter<NewEpochEvent>;
 
@@ -353,34 +224,23 @@ export interface OwnershipTransferredEventObject {
   previousOwner: string;
   newOwner: string;
 }
-export type OwnershipTransferredEvent = TypedEvent<
-  [string, string],
-  OwnershipTransferredEventObject
->;
+export type OwnershipTransferredEvent = TypedEvent<[string, string], OwnershipTransferredEventObject>;
 
-export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>;
+export type OwnershipTransferredEventFilter = TypedEventFilter<OwnershipTransferredEvent>;
 
 export interface SetNewECVRFVerifierEventObject {
   actor: string;
   ecvrfAddress: string;
 }
-export type SetNewECVRFVerifierEvent = TypedEvent<
-  [string, string],
-  SetNewECVRFVerifierEventObject
->;
+export type SetNewECVRFVerifierEvent = TypedEvent<[string, string], SetNewECVRFVerifierEventObject>;
 
-export type SetNewECVRFVerifierEventFilter =
-  TypedEventFilter<SetNewECVRFVerifierEvent>;
+export type SetNewECVRFVerifierEventFilter = TypedEventFilter<SetNewECVRFVerifierEvent>;
 
 export interface SetNewOperatorEventObject {
   oldOperator: string;
   newOperator: string;
 }
-export type SetNewOperatorEvent = TypedEvent<
-  [string, string],
-  SetNewOperatorEventObject
->;
+export type SetNewOperatorEvent = TypedEvent<[string, string], SetNewOperatorEventObject>;
 
 export type SetNewOperatorEventFilter = TypedEventFilter<SetNewOperatorEvent>;
 
@@ -389,10 +249,7 @@ export interface SetNewPublicKeyEventObject {
   pkx: BigNumber;
   pky: BigNumber;
 }
-export type SetNewPublicKeyEvent = TypedEvent<
-  [string, BigNumber, BigNumber],
-  SetNewPublicKeyEventObject
->;
+export type SetNewPublicKeyEvent = TypedEvent<[string, BigNumber, BigNumber], SetNewPublicKeyEventObject>;
 
 export type SetNewPublicKeyEventFilter = TypedEventFilter<SetNewPublicKeyEvent>;
 
@@ -400,10 +257,7 @@ export interface SetPenaltyEventObject {
   oldPenaltyFee: BigNumber;
   newPenaltyFee: BigNumber;
 }
-export type SetPenaltyEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  SetPenaltyEventObject
->;
+export type SetPenaltyEvent = TypedEvent<[BigNumber, BigNumber], SetPenaltyEventObject>;
 
 export type SetPenaltyEventFilter = TypedEventFilter<SetPenaltyEvent>;
 
@@ -412,10 +266,7 @@ export interface TransferEventObject {
   to: string;
   value: BigNumber;
 }
-export type TransferEvent = TypedEvent<
-  [string, string, BigNumber],
-  TransferEventObject
->;
+export type TransferEvent = TypedEvent<[string, string, BigNumber], TransferEventObject>;
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
@@ -429,16 +280,12 @@ export interface OrandProviderV1 extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
-  listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
-  ): Array<TypedListener<TEvent>>;
+  listeners<TEvent extends TypedEvent>(eventFilter?: TypedEventFilter<TEvent>): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
-  removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
-  ): this;
+  removeAllListeners<TEvent extends TypedEvent>(eventFilter: TypedEventFilter<TEvent>): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
   on: OnEvent<this>;
@@ -449,12 +296,12 @@ export interface OrandProviderV1 extends BaseContract {
     checkECVRFProof(
       alpha: PromiseOrValue<BigNumberish>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { epochResult: BigNumber }>;
 
     checkProofSigner(
       proof: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [IOrandECDSA.OrandECDSAProofStructOutput] & {
         ecdsaProof: IOrandECDSA.OrandECDSAProofStructOutput;
@@ -463,17 +310,17 @@ export interface OrandProviderV1 extends BaseContract {
 
     collateralBalance(
       consumerAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { balance: BigNumber }>;
 
     deposit(
       consumerContract: PromiseOrValue<string>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     getCurrentAlpha(
       receiverAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { epochAlpha: BigNumber }>;
 
     getECVRFVerifier(overrides?: CallOverrides): Promise<[string]>;
@@ -481,116 +328,100 @@ export interface OrandProviderV1 extends BaseContract {
     getFraudProofAlpha(
       receiverAddress: PromiseOrValue<string>,
       epoch: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { epochAlpha: BigNumber }>;
 
-    getOperator(
-      overrides?: CallOverrides
-    ): Promise<[string] & { operatorAddress: string }>;
+    getOperator(overrides?: CallOverrides): Promise<[string] & { operatorAddress: string }>;
 
-    getPenaltyFee(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { fee: BigNumber }>;
+    getPenaltyFee(overrides?: CallOverrides): Promise<[BigNumber] & { fee: BigNumber }>;
 
-    getPublicKey(
-      overrides?: CallOverrides
-    ): Promise<[[BigNumber, BigNumber]] & { pubKey: [BigNumber, BigNumber] }>;
+    getPublicKey(overrides?: CallOverrides): Promise<[[BigNumber, BigNumber]] & { pubKey: [BigNumber, BigNumber] }>;
 
     getTargetEpoch(
       receiverAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber] & { targetEpoch: BigNumber }>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     publishFraudProof(
       proof: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     publishValidityProof(
       proof: PromiseOrValue<BytesLike>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
-    renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    renounceOwnership(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
     setNewECVRFVerifier(
       ecvrfAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     setOperator(
       operatorAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     setPenalty(
       newPenaltyFee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     setPublicKey(
       pk: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     sueFraudProof(
       proof: PromiseOrValue<BytesLike>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     switchToValidityProof(
       proof: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<ContractTransaction>;
 
-    withdraw(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    withdraw(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
   };
 
   checkECVRFProof(
     alpha: PromiseOrValue<BigNumberish>,
     newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   checkProofSigner(
     proof: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<IOrandECDSA.OrandECDSAProofStructOutput>;
 
-  collateralBalance(
-    consumerAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  collateralBalance(consumerAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
   deposit(
     consumerContract: PromiseOrValue<string>,
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  getCurrentAlpha(
-    receiverAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  getCurrentAlpha(receiverAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
   getECVRFVerifier(overrides?: CallOverrides): Promise<string>;
 
   getFraudProofAlpha(
     receiverAddress: PromiseOrValue<string>,
     epoch: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   getOperator(overrides?: CallOverrides): Promise<string>;
@@ -599,101 +430,85 @@ export interface OrandProviderV1 extends BaseContract {
 
   getPublicKey(overrides?: CallOverrides): Promise<[BigNumber, BigNumber]>;
 
-  getTargetEpoch(
-    receiverAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  getTargetEpoch(receiverAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
   publishFraudProof(
     proof: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   publishValidityProof(
     proof: PromiseOrValue<BytesLike>,
     newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  renounceOwnership(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  renounceOwnership(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
   setNewECVRFVerifier(
     ecvrfAddress: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   setOperator(
     operatorAddress: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   setPenalty(
     newPenaltyFee: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   setPublicKey(
     pk: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   sueFraudProof(
     proof: PromiseOrValue<BytesLike>,
     newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   switchToValidityProof(
     proof: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> },
   ): Promise<ContractTransaction>;
 
-  withdraw(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  withdraw(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<ContractTransaction>;
 
   callStatic: {
     checkECVRFProof(
       alpha: PromiseOrValue<BigNumberish>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     checkProofSigner(
       proof: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<IOrandECDSA.OrandECDSAProofStructOutput>;
 
-    collateralBalance(
-      consumerAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    collateralBalance(consumerAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    deposit(
-      consumerContract: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    deposit(consumerContract: PromiseOrValue<string>, overrides?: CallOverrides): Promise<boolean>;
 
-    getCurrentAlpha(
-      receiverAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getCurrentAlpha(receiverAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
     getECVRFVerifier(overrides?: CallOverrides): Promise<string>;
 
     getFraudProofAlpha(
       receiverAddress: PromiseOrValue<string>,
       epoch: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getOperator(overrides?: CallOverrides): Promise<string>;
@@ -702,144 +517,114 @@ export interface OrandProviderV1 extends BaseContract {
 
     getPublicKey(overrides?: CallOverrides): Promise<[BigNumber, BigNumber]>;
 
-    getTargetEpoch(
-      receiverAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getTargetEpoch(receiverAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
-    publishFraudProof(
-      proof: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    publishFraudProof(proof: PromiseOrValue<BytesLike>, overrides?: CallOverrides): Promise<boolean>;
 
     publishValidityProof(
       proof: PromiseOrValue<BytesLike>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
-    setNewECVRFVerifier(
-      ecvrfAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    setNewECVRFVerifier(ecvrfAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
 
-    setOperator(
-      operatorAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    setOperator(operatorAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<boolean>;
 
-    setPenalty(
-      newPenaltyFee: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    setPenalty(newPenaltyFee: PromiseOrValue<BigNumberish>, overrides?: CallOverrides): Promise<boolean>;
 
-    setPublicKey(
-      pk: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    setPublicKey(pk: PromiseOrValue<BytesLike>, overrides?: CallOverrides): Promise<boolean>;
 
     sueFraudProof(
       proof: PromiseOrValue<BytesLike>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    switchToValidityProof(
-      proof: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    switchToValidityProof(proof: PromiseOrValue<BytesLike>, overrides?: CallOverrides): Promise<boolean>;
 
-    transferOwnership(
-      newOwner: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    transferOwnership(newOwner: PromiseOrValue<string>, overrides?: CallOverrides): Promise<void>;
 
     withdraw(overrides?: CallOverrides): Promise<boolean>;
   };
 
   filters: {
-    "ApplyPenalty(address,address,uint256)"(
+    'ApplyPenalty(address,address,uint256)'(
       plaintiff?: PromiseOrValue<string> | null,
       theAccused?: PromiseOrValue<string> | null,
-      value?: PromiseOrValue<BigNumberish> | null
+      value?: PromiseOrValue<BigNumberish> | null,
     ): ApplyPenaltyEventFilter;
     ApplyPenalty(
       plaintiff?: PromiseOrValue<string> | null,
       theAccused?: PromiseOrValue<string> | null,
-      value?: PromiseOrValue<BigNumberish> | null
+      value?: PromiseOrValue<BigNumberish> | null,
     ): ApplyPenaltyEventFilter;
 
-    "NewEpoch(address,uint256,uint256)"(
+    'NewEpoch(address,uint256,uint256)'(
       receiverAddress?: PromiseOrValue<string> | null,
       receiverEpoch?: PromiseOrValue<BigNumberish> | null,
-      randomness?: PromiseOrValue<BigNumberish> | null
+      randomness?: PromiseOrValue<BigNumberish> | null,
     ): NewEpochEventFilter;
     NewEpoch(
       receiverAddress?: PromiseOrValue<string> | null,
       receiverEpoch?: PromiseOrValue<BigNumberish> | null,
-      randomness?: PromiseOrValue<BigNumberish> | null
+      randomness?: PromiseOrValue<BigNumberish> | null,
     ): NewEpochEventFilter;
 
-    "OwnershipTransferred(address,address)"(
+    'OwnershipTransferred(address,address)'(
       previousOwner?: PromiseOrValue<string> | null,
-      newOwner?: PromiseOrValue<string> | null
+      newOwner?: PromiseOrValue<string> | null,
     ): OwnershipTransferredEventFilter;
     OwnershipTransferred(
       previousOwner?: PromiseOrValue<string> | null,
-      newOwner?: PromiseOrValue<string> | null
+      newOwner?: PromiseOrValue<string> | null,
     ): OwnershipTransferredEventFilter;
 
-    "SetNewECVRFVerifier(address,address)"(
+    'SetNewECVRFVerifier(address,address)'(
       actor?: PromiseOrValue<string> | null,
-      ecvrfAddress?: PromiseOrValue<string> | null
+      ecvrfAddress?: PromiseOrValue<string> | null,
     ): SetNewECVRFVerifierEventFilter;
     SetNewECVRFVerifier(
       actor?: PromiseOrValue<string> | null,
-      ecvrfAddress?: PromiseOrValue<string> | null
+      ecvrfAddress?: PromiseOrValue<string> | null,
     ): SetNewECVRFVerifierEventFilter;
 
-    "SetNewOperator(address,address)"(
+    'SetNewOperator(address,address)'(
       oldOperator?: PromiseOrValue<string> | null,
-      newOperator?: PromiseOrValue<string> | null
+      newOperator?: PromiseOrValue<string> | null,
     ): SetNewOperatorEventFilter;
     SetNewOperator(
       oldOperator?: PromiseOrValue<string> | null,
-      newOperator?: PromiseOrValue<string> | null
+      newOperator?: PromiseOrValue<string> | null,
     ): SetNewOperatorEventFilter;
 
-    "SetNewPublicKey(address,uint256,uint256)"(
+    'SetNewPublicKey(address,uint256,uint256)'(
       actor?: PromiseOrValue<string> | null,
       pkx?: PromiseOrValue<BigNumberish> | null,
-      pky?: PromiseOrValue<BigNumberish> | null
+      pky?: PromiseOrValue<BigNumberish> | null,
     ): SetNewPublicKeyEventFilter;
     SetNewPublicKey(
       actor?: PromiseOrValue<string> | null,
       pkx?: PromiseOrValue<BigNumberish> | null,
-      pky?: PromiseOrValue<BigNumberish> | null
+      pky?: PromiseOrValue<BigNumberish> | null,
     ): SetNewPublicKeyEventFilter;
 
-    "SetPenalty(uint256,uint256)"(
-      oldPenaltyFee?: null,
-      newPenaltyFee?: null
-    ): SetPenaltyEventFilter;
-    SetPenalty(
-      oldPenaltyFee?: null,
-      newPenaltyFee?: null
-    ): SetPenaltyEventFilter;
+    'SetPenalty(uint256,uint256)'(oldPenaltyFee?: null, newPenaltyFee?: null): SetPenaltyEventFilter;
+    SetPenalty(oldPenaltyFee?: null, newPenaltyFee?: null): SetPenaltyEventFilter;
 
-    "Transfer(address,address,uint256)"(
+    'Transfer(address,address,uint256)'(
       from?: PromiseOrValue<string> | null,
       to?: PromiseOrValue<string> | null,
-      value?: PromiseOrValue<BigNumberish> | null
+      value?: PromiseOrValue<BigNumberish> | null,
     ): TransferEventFilter;
     Transfer(
       from?: PromiseOrValue<string> | null,
       to?: PromiseOrValue<string> | null,
-      value?: PromiseOrValue<BigNumberish> | null
+      value?: PromiseOrValue<BigNumberish> | null,
     ): TransferEventFilter;
   };
 
@@ -847,35 +632,26 @@ export interface OrandProviderV1 extends BaseContract {
     checkECVRFProof(
       alpha: PromiseOrValue<BigNumberish>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    checkProofSigner(
-      proof: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    checkProofSigner(proof: PromiseOrValue<BytesLike>, overrides?: CallOverrides): Promise<BigNumber>;
 
-    collateralBalance(
-      consumerAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    collateralBalance(consumerAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
     deposit(
       consumerContract: PromiseOrValue<string>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    getCurrentAlpha(
-      receiverAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getCurrentAlpha(receiverAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
     getECVRFVerifier(overrides?: CallOverrides): Promise<BigNumber>;
 
     getFraudProofAlpha(
       receiverAddress: PromiseOrValue<string>,
       epoch: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getOperator(overrides?: CallOverrides): Promise<BigNumber>;
@@ -884,102 +660,89 @@ export interface OrandProviderV1 extends BaseContract {
 
     getPublicKey(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getTargetEpoch(
-      receiverAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    getTargetEpoch(receiverAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     publishFraudProof(
       proof: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     publishValidityProof(
       proof: PromiseOrValue<BytesLike>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    renounceOwnership(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<BigNumber>;
 
     setNewECVRFVerifier(
       ecvrfAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     setOperator(
       operatorAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     setPenalty(
       newPenaltyFee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     setPublicKey(
       pk: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     sueFraudProof(
       proof: PromiseOrValue<BytesLike>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     switchToValidityProof(
       proof: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<BigNumber>;
 
-    withdraw(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    withdraw(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<BigNumber>;
   };
 
   populateTransaction: {
     checkECVRFProof(
       alpha: PromiseOrValue<BigNumberish>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    checkProofSigner(
-      proof: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    checkProofSigner(proof: PromiseOrValue<BytesLike>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     collateralBalance(
       consumerAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     deposit(
       consumerContract: PromiseOrValue<string>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    getCurrentAlpha(
-      receiverAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    getCurrentAlpha(receiverAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getECVRFVerifier(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getFraudProofAlpha(
       receiverAddress: PromiseOrValue<string>,
       epoch: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getOperator(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -988,66 +751,59 @@ export interface OrandProviderV1 extends BaseContract {
 
     getPublicKey(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getTargetEpoch(
-      receiverAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    getTargetEpoch(receiverAddress: PromiseOrValue<string>, overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     publishFraudProof(
       proof: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     publishValidityProof(
       proof: PromiseOrValue<BytesLike>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    renounceOwnership(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<PopulatedTransaction>;
 
     setNewECVRFVerifier(
       ecvrfAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     setOperator(
       operatorAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     setPenalty(
       newPenaltyFee: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     setPublicKey(
       pk: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     sueFraudProof(
       proof: PromiseOrValue<BytesLike>,
       newEpoch: IOrandStorage.ECVRFEpochProofStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     switchToValidityProof(
       proof: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> },
     ): Promise<PopulatedTransaction>;
 
-    withdraw(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    withdraw(overrides?: Overrides & { from?: PromiseOrValue<string> }): Promise<PopulatedTransaction>;
   };
 }

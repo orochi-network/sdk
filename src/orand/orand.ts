@@ -1,8 +1,11 @@
 import { enc } from 'crypto-js';
 import axios, { AxiosResponse } from 'axios';
+import { ContractRunner, ContractTransactionResponse, JsonRpcProvider, ethers } from 'ethers';
+import type { OrandProviderV2 } from '../types/OrandProviderV2';
 import { OrandHmac } from './hmac';
+import abiOrandProviderV2 from '../abi/OrandProviderV2.json';
 
-export interface IOrandEpoch {
+export type OrandEpoch = {
   epoch: number;
   alpha: string;
   gamma: string;
@@ -15,26 +18,62 @@ export interface IOrandEpoch {
   inverseZ: string;
   signatureProof: string;
   createdDate: string;
-}
+};
 
-export interface IOrandEpochProof {
-  y: string;
+export type VerifyEpochProofResult = {
+  ecdsaProof: {
+    signer: string;
+    receiverAddress: string;
+    receiverEpoch: bigint;
+    ecvrfProofDigest: bigint;
+  };
+  currentEpochNumber: bigint;
+  isEpochLinked: boolean;
+  isValidDualProof: boolean;
+  currentEpochResult: bigint;
+  verifiedEpochResult: bigint;
+};
+
+export type OrandEpochProof = {
+  // Skip pk since it existed on smart contract
   gamma: [string, string];
   c: string;
   s: string;
+  alpha: string;
   uWitness: string;
   cGammaWitness: [string, string];
   sHashWitness: [string, string];
   zInv: string;
-}
+};
 
-export interface IOrandConfig {
+export type OrandConfig = {
   url: string;
   user: string;
   secretKey: string;
-  chainId: number;
   consumerAddress: string;
-}
+};
+
+export type RecordNetwork = {
+  url: string;
+  chainId: number;
+  providerAddress: string;
+};
+
+export type RecordPublicKey = {
+  username: string;
+  publicKey: string;
+  createdDate: string;
+};
+
+export type OrandProof = {
+  ecdsaProof: string;
+  ecvrfProof: OrandEpochProof;
+};
+
+const NETWORK_MAP = new Map<number, string>([
+  [11155111, '0x606BE603D991F82102f612Ec1170350158BC1331'],
+  [28122024, '0xfB40e49d74b6f00Aad3b055D16b36912051D27EF'],
+]);
 
 function toCamelCase(caseKey: string): string {
   let ret = '';
@@ -53,6 +92,14 @@ function toCamelCase(caseKey: string): string {
   return ret;
 }
 
+function paddingZero(value: string): string {
+  return value.length % 2 === 0 ? value : value.padStart(value.length + 1, '0');
+}
+
+function addHexPrefix(value: string): string {
+  return /^0x/gi.test(value) ? paddingZero(value) : `0x${paddingZero(value)}`;
+}
+
 function objectToCamelCase(obj: any): any {
   let keys = Object.keys(obj);
   let camelResult: any = {};
@@ -66,16 +113,63 @@ export class Orand {
   private url: string;
   private user: string;
   private hmac: OrandHmac;
-  private chainId: number;
+  private network: RecordNetwork;
   private consumerAddress: string;
+  private orandProvider: OrandProviderV2;
+  private defaultRPCProvider: JsonRpcProvider;
+
+  get rpcProvider() {
+    return this.defaultRPCProvider;
+  }
+
+  get orandProviderV2() {
+    return this.orandProvider;
+  }
 
   // Construct a new instance of Orand
-  constructor(config: Partial<IOrandConfig> = {}) {
-    this.url = config.url || 'http://localhost:1337';
-    this.hmac = new OrandHmac(config.secretKey || '0x00');
-    this.user = config.user || '';
-    this.chainId = config.chainId || 0;
-    this.consumerAddress = config.consumerAddress || '0x0000000000000000000000000000000000000000';
+  private constructor(
+    config: OrandConfig,
+    network: RecordNetwork,
+    rpcProvider: JsonRpcProvider,
+    orandProvider: OrandProviderV2,
+  ) {
+    this.url = config.url;
+    this.hmac = new OrandHmac(config.secretKey);
+    this.user = config.user;
+    this.consumerAddress = config.consumerAddress;
+    this.defaultRPCProvider = rpcProvider;
+    this.orandProvider = orandProvider;
+    this.network = network;
+  }
+
+  public static async fromConfig(orandConfig: OrandConfig, networkConfig: RecordNetwork) {
+    const provider = new ethers.JsonRpcProvider(networkConfig.url);
+    const orandProvider: OrandProviderV2 = new ethers.Contract(
+      networkConfig.providerAddress,
+      abiOrandProviderV2,
+      provider,
+    ) as any;
+    return new Orand(orandConfig, networkConfig, provider, orandProvider);
+  }
+
+  public static async fromRPC(config: OrandConfig, rpcURL: string) {
+    const provider = new ethers.JsonRpcProvider(rpcURL);
+    const networkInfo = await provider.getNetwork();
+    const providerAddress = NETWORK_MAP.get(Number(networkInfo.chainId));
+    if (!providerAddress) {
+      throw new Error(`Network ${networkInfo.chainId} was not supported, please email: contract@orochi.network`);
+    }
+    const orandProvider: OrandProviderV2 = new ethers.Contract(providerAddress, abiOrandProviderV2, provider) as any;
+    return new Orand(
+      config,
+      {
+        url: rpcURL,
+        chainId: Number(networkInfo.chainId),
+        providerAddress,
+      },
+      provider,
+      orandProvider,
+    );
   }
 
   private authorization(): string {
@@ -98,11 +192,15 @@ export class Orand {
     )}`;
   }
 
-  private async _request(
-    method: string,
-    params: string[],
-    authorization: boolean = true,
-  ): Promise<AxiosResponse<any, any>> {
+  private async _authorizedRequest(method: string, ...params: any[]): Promise<AxiosResponse<any, any>> {
+    return this._request(method, true, ...params);
+  }
+
+  private async _unauthorizedRequest(method: string, ...params: any[]): Promise<AxiosResponse<any, any>> {
+    return this._request(method, false, ...params);
+  }
+
+  private async _request(method: string, authorization: boolean, ...params: any[]): Promise<AxiosResponse<any, any>> {
     if (authorization === true && !this.hmac.isSignable()) {
       throw new Error('Secret key of Orand HMAC was not set');
     }
@@ -119,7 +217,7 @@ export class Orand {
       headers,
       data: {
         method,
-        params,
+        params: params.map((e) => e.toString()),
       },
       url: this.url,
     });
@@ -137,54 +235,137 @@ export class Orand {
   }
 
   // Required authentication
-  public async newPrivateEpoch(): Promise<IOrandEpoch> {
-    return <IOrandEpoch>(
-      this._postProcess(await this._request('orand_newPrivateEpoch', [this.chainId.toString(), this.consumerAddress]))
+  public async newPrivateEpoch(): Promise<OrandEpoch> {
+    const latestEpochs = await this.getPrivateEpoch();
+    // If there is no epoch, then it's genesis
+    if (latestEpochs.length === 0) {
+      return <OrandEpoch>(
+        this._postProcess(
+          await this._authorizedRequest('orand_newPrivateEpoch', this.network.chainId.toString(), this.consumerAddress),
+        )
+      );
+    }
+    // Get total epoch on-chain
+    const onChainTotalEpoch = Number(await this.orandProvider.getTotalEpoch(this.consumerAddress));
+    // If on-chain total epoch is 0, then it's genesis
+    if (onChainTotalEpoch === 0) {
+      let result = latestEpochs.filter((e) => e.epoch === 0);
+      if (result.length === 0) {
+        throw new Error('Cannot find genesis epoch');
+      }
+      return result[0];
+    }
+    // If on-chain total epoch is less than or equal to latest epoch, then it's latest epoch
+    if (onChainTotalEpoch <= latestEpochs[0].epoch) {
+      let result = latestEpochs.filter((e) => e.epoch === onChainTotalEpoch);
+      return result.length === 0 ? latestEpochs[0] : result[0];
+    }
+    return <OrandEpoch>(
+      this._postProcess(
+        await this._authorizedRequest('orand_newPrivateEpoch', this.network.chainId.toString(), this.consumerAddress),
+      )
     );
   }
 
-  public transformProof(proof: IOrandEpoch): [string, IOrandEpochProof] {
-    return [
-      `0x${proof.signatureProof}`,
-      {
-        y: `0x${proof.y}`,
-        gamma: [`0x${proof.gamma.substring(0, 64)}`, `0x${proof.gamma.substring(64, 128)}`],
-        c: `0x${proof.c}`,
-        s: `0x${proof.s}`,
-        uWitness: `0x${proof.witnessAddress}`,
-        cGammaWitness: [`0x${proof.witnessGamma.substring(0, 64)}`, `0x${proof.witnessGamma.substring(64, 128)}`],
-        sHashWitness: [`0x${proof.witnessHash.substring(0, 64)}`, `0x${proof.witnessHash.substring(64, 128)}`],
-        zInv: `0x${proof.inverseZ}`,
+  public static transformProof(proof: OrandEpoch): OrandProof {
+    return {
+      ecdsaProof: addHexPrefix(proof.signatureProof),
+      ecvrfProof: {
+        gamma: [addHexPrefix(proof.gamma.substring(0, 64)), addHexPrefix(proof.gamma.substring(64, 128))] as [
+          string,
+          string,
+        ],
+        c: addHexPrefix(proof.c),
+        s: addHexPrefix(proof.s),
+        alpha: addHexPrefix(proof.alpha),
+        uWitness: addHexPrefix(proof.witnessAddress),
+        cGammaWitness: [
+          addHexPrefix(proof.witnessGamma.substring(0, 64)),
+          addHexPrefix(proof.witnessGamma.substring(64, 128)),
+        ] as [string, string],
+        sHashWitness: [
+          addHexPrefix(proof.witnessHash.substring(0, 64)),
+          addHexPrefix(proof.witnessHash.substring(64, 128)),
+        ] as [string, string],
+        zInv: addHexPrefix(proof.inverseZ),
       },
-    ];
+    };
   }
 
   // Not required authentication
-  public async getPrivateEpoch(epoch: number): Promise<IOrandEpoch[]> {
-    return <IOrandEpoch[]>(
+  public async getPrivateEpoch(epoch?: number): Promise<OrandEpoch[]> {
+    return <OrandEpoch[]>(
       this._postProcess(
-        await this._request(
+        await this._unauthorizedRequest(
           'orand_getPrivateEpoch',
-          [this.chainId.toString(), this.consumerAddress, epoch.toString()],
-          false,
+          this.network.chainId,
+          this.consumerAddress,
+          epoch ? epoch : '9223372036854775807',
         ),
       )
     );
   }
 
   // Not required authentication
-  public async getPublicEpoch(epoch: number): Promise<IOrandEpoch[]> {
-    return <IOrandEpoch[]>(
-      this._postProcess(await this._request('orand_getPublicEpoch', [this.chainId.toString(), epoch.toString()], false))
+  public async getPublicEpoch(epoch?: number): Promise<OrandEpoch[]> {
+    return <OrandEpoch[]>(
+      this._postProcess(
+        await this._unauthorizedRequest(
+          'orand_getPublicEpoch',
+          this.network.chainId,
+          epoch ? epoch : '9223372036854775807',
+        ),
+      )
     );
   }
 
   // Not required authentication
-  public async getPublicKey(user?: string): Promise<IOrandEpoch[]> {
-    return <IOrandEpoch[]>(
+  public async getPublicKey(user: string = 'orand'): Promise<RecordPublicKey> {
+    return <RecordPublicKey>(
       this._postProcess(
-        await this._request('orand_getPublicKey', [typeof user === 'undefined' ? this.user : user], false),
+        await this._unauthorizedRequest('orand_getPublicKey', typeof user === 'undefined' ? this.user : user),
       )
     );
+  }
+
+  public async publish(proof: OrandEpoch, wallet: ContractRunner): Promise<ContractTransactionResponse> {
+    const contract = this.orandProvider.connect(wallet);
+    const { ecdsaProof, ecvrfProof } = Orand.transformProof(proof);
+
+    const verifyEpoch = await this.verifyEpoch(proof);
+    if (!verifyEpoch.isValidDualProof) {
+      throw new Error('Invalid dual proof');
+    }
+    // If current epoch is 0, then it's genesis
+    if (verifyEpoch.currentEpochResult === 0n) {
+      return contract.genesis(ecdsaProof, ecvrfProof);
+    } else {
+      return contract.publish(this.consumerAddress, ecvrfProof);
+    }
+  }
+
+  public async verifyEpoch(epochECVRFProof: OrandEpoch): Promise<VerifyEpochProofResult> {
+    const { ecdsaProof, ecvrfProof } = Orand.transformProof(epochECVRFProof);
+    const {
+      ecdsaProof: { signer, receiverAddress, receiverEpoch, ecvrfProofDigest },
+      currentEpochNumber,
+      isEpochLinked,
+      isValidDualProof,
+      currentEpochResult,
+      verifiedEpochResult,
+    }: VerifyEpochProofResult = await this.orandProvider.verifyEpoch(ecdsaProof, ecvrfProof);
+    return {
+      ecdsaProof: { signer, receiverAddress, receiverEpoch, ecvrfProofDigest },
+      currentEpochNumber,
+      isEpochLinked,
+      isValidDualProof,
+      currentEpochResult,
+      verifiedEpochResult,
+    };
+  }
+
+  // Get chain record of active chain
+  public getNetwork(): RecordNetwork {
+    return this.network;
   }
 }

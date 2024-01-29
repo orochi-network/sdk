@@ -1,7 +1,23 @@
-export * as orand from './orand';
-import { IOrandConfig, IOrandEpoch, IOrandEpochProof } from './orand';
-import { OrandECVRF, OrandProviderV1 } from './types';
-import abiOrandECVRF from './abi/OrandECVRF.json';
-import abiOrandProviderV1 from './abi/OrandProviderV1.json';
+import {
+  type OrandConfig,
+  type OrandEpoch,
+  type OrandEpochProof,
+  type RecordPublicKey,
+  type RecordNetwork,
+  type VerifyEpochProofResult,
+  Orand,
+} from './orand';
+import abiOrandProviderV2 from './abi/OrandProviderV2.json';
+import type { OrandProviderV2 } from './types/OrandProviderV2';
 
-export { IOrandConfig, IOrandEpoch, IOrandEpochProof, abiOrandECVRF, abiOrandProviderV1, OrandECVRF, OrandProviderV1 };
+export {
+  Orand,
+  OrandConfig,
+  OrandEpoch,
+  OrandEpochProof,
+  abiOrandProviderV2 as OrandProviderV2ABI,
+  OrandProviderV2,
+  RecordPublicKey,
+  RecordNetwork,
+  VerifyEpochProofResult,
+};

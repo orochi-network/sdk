@@ -179,11 +179,13 @@ export class Orand {
         typ: 'JWT',
       }),
     );*/
+    const now = Math.floor(Date.now() / 1000);
     const payload = enc.Utf8.parse(
       JSON.stringify({
         user: this.user,
         nonce: (Math.random() * 0xffffffff) >>> 0,
-        timestamp: Date.now(),
+        iat: now,
+        exp: now + 30,
       }),
     );
     const signature = this.hmac.sign(payload);
@@ -296,7 +298,7 @@ export class Orand {
   public async getPrivateEpoch(epoch?: number): Promise<OrandEpoch[]> {
     return <OrandEpoch[]>(
       this._postProcess(
-        await this._unauthorizedRequest(
+        await this._authorizedRequest(
           'orand_getPrivateEpoch',
           this.network.chainId,
           this.consumerAddress,
@@ -310,7 +312,7 @@ export class Orand {
   public async getPublicEpoch(epoch?: number): Promise<OrandEpoch[]> {
     return <OrandEpoch[]>(
       this._postProcess(
-        await this._unauthorizedRequest(
+        await this._authorizedRequest(
           'orand_getPublicEpoch',
           this.network.chainId,
           epoch ? epoch : '9223372036854775807',
@@ -323,7 +325,7 @@ export class Orand {
   public async getPublicKey(user: string = 'orand'): Promise<RecordPublicKey> {
     return <RecordPublicKey>(
       this._postProcess(
-        await this._unauthorizedRequest('orand_getPublicKey', typeof user === 'undefined' ? this.user : user),
+        await this._authorizedRequest('orand_getPublicKey', typeof user === 'undefined' ? this.user : user),
       )
     );
   }

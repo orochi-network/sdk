@@ -179,12 +179,13 @@ export class Orand {
         typ: 'JWT',
       }),
     );*/
+    const now = Math.floor(Date.now() / 1000);
     const payload = enc.Utf8.parse(
       JSON.stringify({
         user: this.user,
         nonce: (Math.random() * 0xffffffff) >>> 0,
-        iat: Date.now(),
-        exp: Date.now() + 30000,
+        iat: now,
+        exp: now + 30,
       }),
     );
     const signature = this.hmac.sign(payload);

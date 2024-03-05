@@ -183,7 +183,8 @@ export class Orand {
       JSON.stringify({
         user: this.user,
         nonce: (Math.random() * 0xffffffff) >>> 0,
-        timestamp: Date.now(),
+        iat: Date.now(),
+        exp: Date.now() + 30000,
       }),
     );
     const signature = this.hmac.sign(payload);

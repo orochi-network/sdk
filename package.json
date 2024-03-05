@@ -1,6 +1,6 @@
 {
   "name": "@orochi-network/sdk",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "Orochi Network SDK",
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",

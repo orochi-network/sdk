@@ -198,10 +198,6 @@ export class Orand {
     return this._request(method, true, ...params);
   }
 
-  private async _unauthorizedRequest(method: string, ...params: any[]): Promise<AxiosResponse<any, any>> {
-    return this._request(method, false, ...params);
-  }
-
   private async _request(method: string, authorization: boolean, ...params: any[]): Promise<AxiosResponse<any, any>> {
     if (authorization === true && !this.hmac.isSignable()) {
       throw new Error('Secret key of Orand HMAC was not set');

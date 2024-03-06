@@ -15,4 +15,4 @@ typedoc.json
 .github
 *.log
 .DS_Store
-conpy-me.js
+copy-me.js

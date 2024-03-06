@@ -198,8 +198,9 @@ export class Orand {
     return this._request(method, true, ...params);
   }
 
-  private async _unauthorizedRequest(method: string, ...params: any[]): Promise<AxiosResponse<any, any>> {
-    return this._request(method, false, ...params);
+  // @todo: Test method
+  public async rawRequest(method: string, ...params: any[]): Promise<AxiosResponse<any, any>> {
+    return this._request(method, true, ...params);
   }
 
   private async _request(method: string, authorization: boolean, ...params: any[]): Promise<AxiosResponse<any, any>> {

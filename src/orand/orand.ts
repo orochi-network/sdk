@@ -71,8 +71,11 @@ export type OrandProof = {
 };
 
 const NETWORK_MAP = new Map<number, string>([
-  [11155111, '0x606BE603D991F82102f612Ec1170350158BC1331'],
-  [28122024, '0xfB40e49d74b6f00Aad3b055D16b36912051D27EF'],
+  // A8 Testnet
+  [28122024, '0x23D10462DEB4f8e3865df207d799b00682319cb8'],
+  // U2U Testnet
+  [2484, '0x761d769A184642FdDb278589Bf2bEb6e765676E3'],
+  // Mainnet
 ]);
 
 function toCamelCase(caseKey: string): string {
@@ -240,6 +243,12 @@ export class Orand {
 
   // Required authentication
   public async newPrivateEpoch(): Promise<OrandEpoch> {
+    return <OrandEpoch>(
+      this._postProcess(
+        await this._authorizedRequest('orand_newPrivateEpoch', this.network.chainId.toString(), this.consumerAddress),
+      )
+    );
+    /*
     const latestEpochs = await this.getPrivateEpoch();
     // If there is no epoch, then it's genesis
     if (latestEpochs.length === 0) {
@@ -268,7 +277,7 @@ export class Orand {
       this._postProcess(
         await this._authorizedRequest('orand_newPrivateEpoch', this.network.chainId.toString(), this.consumerAddress),
       )
-    );
+    );*/
   }
 
   public static transformProof(proof: OrandEpoch): OrandProof {

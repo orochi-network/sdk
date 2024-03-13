@@ -113,6 +113,7 @@ function objectToCamelCase(obj: any): any {
 }
 
 export class Orand {
+  private static instances = new Map<string, Orand>();
   private url: string;
   private user: string;
   private hmac: OrandHmac;
@@ -146,33 +147,44 @@ export class Orand {
   }
 
   public static async fromConfig(orandConfig: OrandConfig, networkConfig: RecordNetwork) {
-    const provider = new ethers.JsonRpcProvider(networkConfig.url);
-    const orandProvider: OrandProviderV2 = new ethers.Contract(
-      networkConfig.providerAddress,
-      abiOrandProviderV2,
-      provider,
-    ) as any;
-    return new Orand(orandConfig, networkConfig, provider, orandProvider);
+    const key = `${networkConfig.url}${orandConfig.consumerAddress}${orandConfig.user}`;
+    if (!Orand.instances.has(key)) {
+      const provider = new ethers.JsonRpcProvider(networkConfig.url);
+      const orandProvider: OrandProviderV2 = new ethers.Contract(
+        networkConfig.providerAddress,
+        abiOrandProviderV2,
+        provider,
+      ) as any;
+      Orand.instances.set(key, new Orand(orandConfig, networkConfig, provider, orandProvider));
+    }
+    return Orand.instances.get(key)!;
   }
 
   public static async fromRPC(config: OrandConfig, rpcURL: string) {
-    const provider = new ethers.JsonRpcProvider(rpcURL);
-    const networkInfo = await provider.getNetwork();
-    const providerAddress = NETWORK_MAP.get(Number(networkInfo.chainId));
-    if (!providerAddress) {
-      throw new Error(`Network ${networkInfo.chainId} was not supported, please email: contract@orochi.network`);
+    const key = `${rpcURL}${config.consumerAddress}${config.user}`;
+    if (!Orand.instances.has(key)) {
+      const provider = new ethers.JsonRpcProvider(rpcURL);
+      const networkInfo = await provider.getNetwork();
+      const providerAddress = NETWORK_MAP.get(Number(networkInfo.chainId));
+      if (!providerAddress) {
+        throw new Error(`Network ${networkInfo.chainId} was not supported, please email: contract@orochi.network`);
+      }
+      const orandProvider: OrandProviderV2 = new ethers.Contract(providerAddress, abiOrandProviderV2, provider) as any;
+      Orand.instances.set(
+        key,
+        new Orand(
+          config,
+          {
+            url: rpcURL,
+            chainId: Number(networkInfo.chainId),
+            providerAddress,
+          },
+          provider,
+          orandProvider,
+        ),
+      );
     }
-    const orandProvider: OrandProviderV2 = new ethers.Contract(providerAddress, abiOrandProviderV2, provider) as any;
-    return new Orand(
-      config,
-      {
-        url: rpcURL,
-        chainId: Number(networkInfo.chainId),
-        providerAddress,
-      },
-      provider,
-      orandProvider,
-    );
+    return Orand.instances.get(key)!;
   }
 
   private authorization(): string {

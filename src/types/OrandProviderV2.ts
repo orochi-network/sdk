@@ -86,7 +86,9 @@ export interface OrandProviderV2Interface extends Interface {
       | "getCurrentEpochResult"
       | "getECVRFVerifier"
       | "getEpochResult"
+      | "getMaximumBatching"
       | "getOperator"
+      | "getOracle"
       | "getPublicKey"
       | "getPublicKeyDigest"
       | "getTotalEpoch"
@@ -96,6 +98,7 @@ export interface OrandProviderV2Interface extends Interface {
       | "renounceOwnership"
       | "setMaxBatching"
       | "setNewECVRFVerifier"
+      | "setNewOracle"
       | "setPublicKey"
       | "transferOwnership"
       | "verifyEpoch"
@@ -108,6 +111,7 @@ export interface OrandProviderV2Interface extends Interface {
       | "SetBatchingLimit"
       | "SetNewECVRFVerifier"
       | "SetNewOperator"
+      | "SetNewOracle"
       | "SetNewPublicKey"
   ): EventFragment;
 
@@ -136,9 +140,14 @@ export interface OrandProviderV2Interface extends Interface {
     values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "getMaximumBatching",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getOperator",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "getOracle", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getPublicKey",
     values?: undefined
@@ -170,6 +179,10 @@ export interface OrandProviderV2Interface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setNewECVRFVerifier",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setNewOracle",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -207,9 +220,14 @@ export interface OrandProviderV2Interface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getMaximumBatching",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getOperator",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getOracle", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getPublicKey",
     data: BytesLike
@@ -238,6 +256,10 @@ export interface OrandProviderV2Interface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "setNewECVRFVerifier",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setNewOracle",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -321,6 +343,19 @@ export namespace SetNewOperatorEvent {
   export interface OutputObject {
     oldOperator: string;
     newOperator: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace SetNewOracleEvent {
+  export type InputTuple = [actor: AddressLike, newOracle: AddressLike];
+  export type OutputTuple = [actor: string, newOracle: string];
+  export interface OutputObject {
+    actor: string;
+    newOracle: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -421,7 +456,11 @@ export interface OrandProviderV2 extends BaseContract {
     "view"
   >;
 
+  getMaximumBatching: TypedContractMethod<[], [bigint], "view">;
+
   getOperator: TypedContractMethod<[], [string], "view">;
+
+  getOracle: TypedContractMethod<[], [string], "view">;
 
   getPublicKey: TypedContractMethod<[], [[bigint, bigint]], "view">;
 
@@ -453,6 +492,12 @@ export interface OrandProviderV2 extends BaseContract {
 
   setNewECVRFVerifier: TypedContractMethod<
     [ecvrfAddress: AddressLike],
+    [boolean],
+    "nonpayable"
+  >;
+
+  setNewOracle: TypedContractMethod<
+    [oracleAddress: AddressLike],
     [boolean],
     "nonpayable"
   >;
@@ -526,7 +571,13 @@ export interface OrandProviderV2 extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "getMaximumBatching"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "getOperator"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "getOracle"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "getPublicKey"
@@ -567,6 +618,9 @@ export interface OrandProviderV2 extends BaseContract {
   getFunction(
     nameOrSignature: "setNewECVRFVerifier"
   ): TypedContractMethod<[ecvrfAddress: AddressLike], [boolean], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setNewOracle"
+  ): TypedContractMethod<[oracleAddress: AddressLike], [boolean], "nonpayable">;
   getFunction(
     nameOrSignature: "setPublicKey"
   ): TypedContractMethod<
@@ -637,6 +691,13 @@ export interface OrandProviderV2 extends BaseContract {
     SetNewOperatorEvent.OutputObject
   >;
   getEvent(
+    key: "SetNewOracle"
+  ): TypedContractEvent<
+    SetNewOracleEvent.InputTuple,
+    SetNewOracleEvent.OutputTuple,
+    SetNewOracleEvent.OutputObject
+  >;
+  getEvent(
     key: "SetNewPublicKey"
   ): TypedContractEvent<
     SetNewPublicKeyEvent.InputTuple,
@@ -698,6 +759,17 @@ export interface OrandProviderV2 extends BaseContract {
       SetNewOperatorEvent.InputTuple,
       SetNewOperatorEvent.OutputTuple,
       SetNewOperatorEvent.OutputObject
+    >;
+
+    "SetNewOracle(address,address)": TypedContractEvent<
+      SetNewOracleEvent.InputTuple,
+      SetNewOracleEvent.OutputTuple,
+      SetNewOracleEvent.OutputObject
+    >;
+    SetNewOracle: TypedContractEvent<
+      SetNewOracleEvent.InputTuple,
+      SetNewOracleEvent.OutputTuple,
+      SetNewOracleEvent.OutputObject
     >;
 
     "SetNewPublicKey(address,uint256,uint256)": TypedContractEvent<

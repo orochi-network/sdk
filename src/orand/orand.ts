@@ -72,9 +72,9 @@ export type OrandProof = {
 
 const NETWORK_MAP = new Map<number, string>([
   // A8 Testnet
-  [28122024, '0x23D10462DEB4f8e3865df207d799b00682319cb8'],
+  [28122024, '0x5778CE57f49A5487D2127fd39a060D75aF694e8c'],
   // U2U Testnet
-  [2484, '0x761d769A184642FdDb278589Bf2bEb6e765676E3'],
+  [2484, '0xe97FE633EC2021A71214D5d9BfF9f337dD1db5c1'],
   // Mainnet
 ]);
 
@@ -213,12 +213,11 @@ export class Orand {
     return this._request(method, true, ...params);
   }
 
-
   // @todo: Test method
   public async rawRequest(method: string, ...params: any[]): Promise<AxiosResponse<any, any>> {
     return this._request(method, true, ...params);
   }
-  
+
   private async _request(method: string, authorization: boolean, ...params: any[]): Promise<AxiosResponse<any, any>> {
     if (authorization === true && !this.hmac.isSignable()) {
       throw new Error('Secret key of Orand HMAC was not set');

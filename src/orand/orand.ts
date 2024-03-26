@@ -77,6 +77,8 @@ const NETWORK_MAP = new Map<number, string>([
   [2484, '0xe97FE633EC2021A71214D5d9BfF9f337dD1db5c1'],
   // A8 Mainnet
   [888888888, '0x184Ae846c6AC7F7452350AB4Fa81C2cD986c64E1'],
+  // U2U Mainnet
+  [39, '0x8131be6f2b15bead0b8d675db9d3d43bfcb3ea72'],
 ]);
 
 function toCamelCase(caseKey: string): string {
